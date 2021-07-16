@@ -47,7 +47,14 @@ if has('nvim') " (neovim only)
     Plug 'jackguo380/vim-lsp-cxx-highlight'
     Plug 'tomasiser/vim-code-dark'
     Plug 'preservim/nerdtree'
+    Plug 'mg979/vim-visual-multi', {'branch': 'master'}
     call plug#end()
+
+    let g:VM_maps = {}
+    let g:VM_maps["Add Cursor Down"] = "<A-j>"
+    let g:VM_maps["Add Cursor Up"] = "<A-k>"
+
+	inoremap <silent> <C-n> <C-R>=coc#start()<CR>
 
     " alacritty's terminal theme
     let g:terminal_color_0 = "#181818"
