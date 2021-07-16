@@ -3,12 +3,21 @@ set number relativenumber hlsearch
 set hidden confirm autochdir 
 syntax on
 
-" executes the current line as vimscript, useful when I edit this file
-nnoremap <C-x> :exe getline(".")<return>
+" executes the current line as vimscript
+nnoremap <leader>x :exe getline(".")<return>
 
 " blasphemy
 nnoremap <C-s> :w<return>
 inoremap <C-s> <esc>:w<return>a
+fu SmartExit()
+    if len(@%) " check if empty buffer
+        wq
+    else
+        q
+    endif
+endfu
+nnoremap <C-x> :call SmartExit()<return>
+inoremap <C-x> :call SmartExit()<return>
 
 " sorcery that makes C indentation not awful
 set cindent
@@ -30,13 +39,14 @@ vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 
 " clear search
 nnoremap <leader>c :noh<return>
+nnoremap <C-l> :noh<return>
 
 " remember folds and position in file
-augroup remember_folds
-  autocmd!
-  autocmd BufWinLeave * mkview
-  autocmd BufWinEnter * silent! loadview
-augroup END
+"augroup remember_folds
+"  autocmd!
+"  autocmd BufWinLeave * mkview
+"  autocmd BufWinEnter * silent! loadview
+"augroup END
 
 if has('nvim') " (neovim only)
 
@@ -47,7 +57,9 @@ if has('nvim') " (neovim only)
     Plug 'jackguo380/vim-lsp-cxx-highlight'
     Plug 'tomasiser/vim-code-dark'
     Plug 'preservim/nerdtree'
+    Plug 'mhinz/vim-startify'
     Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+    Plug 'tpope/vim-fugitive'
     call plug#end()
 
     let g:VM_maps = {}
@@ -55,16 +67,6 @@ if has('nvim') " (neovim only)
     let g:VM_maps["Add Cursor Up"] = "<A-k>"
 
 	inoremap <silent> <C-n> <C-R>=coc#start()<CR>
-
-    " alacritty's terminal theme
-    let g:terminal_color_0 = "#181818"
-    let g:terminal_color_1 = "#ab4642"
-    let g:terminal_color_2 = "#a1b56c"
-    let g:terminal_color_3 = "#f7ca88"
-    let g:terminal_color_4 = "#7cafc2"
-    let g:terminal_color_5 = "#ba8baf"
-    let g:terminal_color_6 = "#86c1b9"
-    let g:terminal_color_7 = "#d8d8d8"
 
     " replicate vanilla vim terminal behaviour
     tnoremap <C-w> <C-\><C-n><C-w>
@@ -77,10 +79,7 @@ if has('nvim') " (neovim only)
     aug END
 
     " vim has these but they don't work I guess
-    if $TERM == "xterm"
-    else
-        set termguicolors cursorline
-    end
+    set termguicolors cursorline
 
     colo codedark
 
@@ -97,6 +96,7 @@ end
 
 " my comfy modified desert
 " this lives down here because it has to... for some reason
+" I don't use this but I spent time on it so here it is
 fu DesertTheme()
     colo desert
     hi Normal                     guibg=NONE
