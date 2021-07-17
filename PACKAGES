@@ -1,6 +1,0 @@
-this configuration requires the following packages (on arch)
-	neovim
-	python-pynvim
-	nodejs
-	npm
-	ccls
