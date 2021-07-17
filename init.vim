@@ -9,15 +9,8 @@ nnoremap <leader>x :exe getline(".")<return>
 " blasphemy
 nnoremap <C-s> :w<return>
 inoremap <C-s> <esc>:w<return>a
-fu SmartExit()
-    if len(@%) " check if empty buffer
-        wq
-    else
-        q
-    endif
-endfu
-nnoremap <C-x> :call SmartExit()<return>
-inoremap <C-x> :call SmartExit()<return>
+nnoremap <C-x> :q<return>
+inoremap <C-x> <esc>:q<return>
 
 " sorcery that makes C indentation not awful
 set cindent
