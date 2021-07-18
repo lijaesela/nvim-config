@@ -1,6 +1,7 @@
 " basic options
 set number relativenumber hlsearch
 set hidden confirm autochdir 
+set termguicolors cursorline
 syntax on
 
 " executes the current line as vimscript
@@ -15,9 +16,6 @@ inoremap <C-x> <esc>:q<return>
 " sorcery that makes C indentation not awful
 set cindent
 set cino=:0,(0,W4,l1
-
-" did you know that Windows Notepad has this exact keybind? Now you do.
-nnoremap <F5> :r !date --iso<return>
 
 " indent current lines or selected lines, Emacs style
 nnoremap <C-i> i<C-f><esc>
@@ -34,68 +32,41 @@ vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 nnoremap <leader>c :noh<return>
 nnoremap <C-l> :noh<return>
 
-" remember folds and position in file
-"augroup remember_folds
-"  autocmd!
-"  autocmd BufWinLeave * mkview
-"  autocmd BufWinEnter * silent! loadview
-"augroup END
+" replicate vanilla vim terminal behaviour
+tnoremap <C-w> <C-\><C-n><C-w>
+tnoremap <C-w>N <C-\><C-n>
 
-if has('nvim') " (neovim only)
+" no line numbers in terminal
+aug term
+    autocmd!
+    autocmd TermOpen * set nonumber norelativenumber
+aug END
 
-    " my based plugins
-    call plug#begin()
-    Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
-    Plug 'jackguo380/vim-lsp-cxx-highlight'
-    Plug 'tomasiser/vim-code-dark'
-    Plug 'preservim/nerdtree'
-    Plug 'mhinz/vim-startify'
-    Plug 'mg979/vim-visual-multi', {'branch': 'master'}
-    Plug 'tpope/vim-fugitive'
-    call plug#end()
+" --- plugins and plugin options ---
+call plug#begin()
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'jackguo380/vim-lsp-cxx-highlight'
+Plug 'tomasiser/vim-code-dark'
+Plug 'preservim/nerdtree'
+Plug 'mhinz/vim-startify'
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+Plug 'tpope/vim-fugitive'
+call plug#end()
 
-    let g:VM_maps = {}
-    let g:VM_maps["Add Cursor Down"] = "<A-j>"
-    let g:VM_maps["Add Cursor Up"] = "<A-k>"
+colo codedark
 
-	inoremap <silent> <C-n> <C-R>=coc#start()<CR>
+" Soydev cursors
+let g:VM_maps = {}
+let g:VM_maps["Add Cursor Down"] = "<A-j>"
+let g:VM_maps["Add Cursor Up"] = "<A-k>"
 
-    " replicate vanilla vim terminal behaviour
-    tnoremap <C-w> <C-\><C-n><C-w>
-    tnoremap <C-w>N <C-\><C-n>
+" simpler start screen
+let g:startify_enable_special = 0
+let g:startify_lists = [
+      \ { 'type': 'sessions',  'header': ['   Sessions']       },
+      \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
+      \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
+      \ ]
 
-    " no line numbers in terminal
-    aug term
-        autocmd!
-        autocmd TermOpen * set nonumber norelativenumber
-    aug END
-
-    " vim has these but they don't work I guess
-    set termguicolors cursorline
-
-    colo codedark
-
-else " (vanilla vim only)
-
-    " tfw no ftplugin
-    set      ts=4 sw=4 et
-    setlocal ts=4 sw=4 et " this still doesn't work(???) but I'm keeping it in out of spite
-
-    " this bind lives here because neovim includes it already :)
-    nnoremap gd viwy/\V<C-R>=escape(@",'/\')<CR><CR>
-
-end
-
-" my comfy modified desert
-" this lives down here because it has to... for some reason
-" I don't use this but I spent time on it so here it is
-fu DesertTheme()
-    colo desert
-    hi Normal                     guibg=NONE
-    hi LineNr       guifg=gray    guibg=#111111 ctermfg=gray   ctermbg=black
-    hi CursorLineNr guifg=yellow  guibg=#111111 ctermfg=yellow ctermbg=black
-    hi CursorLine                 guibg=#111111
-    hi VertSplit    guifg=#c2bfa5 guibg=#c2bfa5 ctermfg=gray   ctermbg=gray
-endfu
-"call DesertTheme()
+inoremap <silent> <C-n> <C-R>=coc#start()<CR>
