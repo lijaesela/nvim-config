@@ -1,0 +1,17 @@
+set shell sh
+set shellopts '-eu'
+set ifs "\n"
+
+map D %trash -v $fx
+
+# packages: sxiv mpv
+
+cmd open ${{
+    case $(file --mime-type $f -b) in
+        text/*) $EDITOR $fx;;
+	image/*) sxiv -ab $fx;;
+	audio/*) mpv --no-video $fx;;
+	video/*) mpv $fx;;
+        *) for f in $fx; do setsid $OPENER $f > /dev/null 2> /dev/null & done;;
+    esac
+}}

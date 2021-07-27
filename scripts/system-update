@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# update packages, and then
+# clear cache of uninstalled packages and old versions of packages
+doas pacman -Syu --noconfirm \
+     && yay -Syua --noconfirm \
+     && doas pacman -Sc   --noconfirm
+
+# update openbox menu in case there are new executables
+if mmaker -t alacritty OpenBox3 -f; then
+    echo "OpenBox menu updated"
+else
+    echo "mmaker error"
+fi
