@@ -1,0 +1,8 @@
+patches were applied in the following order:
+
+- scrollback
+- anysize
+- ligatures-scrollback
+- bold-is-not-bright
+
+if they are ever reverted, they should be undone in reverse.
