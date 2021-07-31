@@ -9,17 +9,22 @@
 
 set -e
 
-[ -n "${distro+1}" ] || distro="$(lsb_release -is)"
+d_info() {
+    printf "[33m[./deploy.sh][m "
+    echo "$@"
+}
+
+if [ -n "${distro+1}" ]; then
+    d_info "using manually selected distro '$distro'"
+else
+    distro="$(lsb_release -is)"
+    d_info "detected distro '$distro'"
+fi
 cfg_dir="${XDG_CONFIG_DIR:-$HOME/.config}"
 pkg_dir="$HOME/pkg"
 rootcmd="sudo"
 
 supported_distros="Arch"
-
-d_info() {
-    printf "[32m[./deploy.sh][m "
-    echo "$@"
-}
 
 d_init() {
     if [ ! -d "$cfg_dir" ]; then
@@ -43,7 +48,6 @@ d_init() {
             exit 1
             ;;
     esac
-    d_info "detected distro '$distro'"
 }
 
 d_neovim() {
@@ -51,13 +55,13 @@ d_neovim() {
         "deps")
             d_info "installing neovim dependencies..."
             $rootcmd $pacman $pkgs_neovim
+            d_info "downloading vim-plug"
+            curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+                https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
             ;;
         "move")
             d_info "copying neovim files..."
             cp -r nvim $cfg_dir
-            d_info "downloading vim-plug"
-            curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-                https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
             ;;
         "install")
             d_info "installing neovim plugins..."
