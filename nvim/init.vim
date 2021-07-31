@@ -11,6 +11,9 @@ nnoremap <leader>x :exe getline(".")<return>
 nnoremap <C-s> :w<return>
 nnoremap <C-x> :q<return>
 
+" c development shortcut
+nnoremap mr :make run<return>
+
 " sorcery that makes C indentation not awful
 set cindent
 set cino=:0,(0,W4,l1
