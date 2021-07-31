@@ -29,6 +29,7 @@ d_neovim() {
         "clean")
             echo "clearing neovim config..."
             rm -rfI "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim ${cfg_dir}/nvim
+            ;;
         *) echo "unknown command" && exit 1;;
     esac
 }
