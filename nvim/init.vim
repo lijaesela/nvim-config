@@ -9,9 +9,7 @@ nnoremap <leader>x :exe getline(".")<return>
 
 " blasphemy
 nnoremap <C-s> :w<return>
-inoremap <C-s> <esc>:w<return>a
 nnoremap <C-x> :q<return>
-inoremap <C-x> <esc>:q<return>
 
 " sorcery that makes C indentation not awful
 set cindent
