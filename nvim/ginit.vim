@@ -1,5 +1,6 @@
 " this text editor is so cool that it can't change the font size
 " this file's comments were censored heavily
+" I personally use neovide, so this is tested with neovide
 
 " my config layer atop Vim's awful one :)
 let g:myfont = "Fira Code"
